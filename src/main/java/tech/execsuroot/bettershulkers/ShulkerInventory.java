@@ -3,7 +3,6 @@ package tech.execsuroot.bettershulkers;
 import net.kyori.adventure.sound.Sound;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
