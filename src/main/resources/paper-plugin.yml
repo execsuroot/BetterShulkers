@@ -1,0 +1,5 @@
+name: "BetterShulkers"
+version: "${version}"
+main: "tech.execsuroot.bettershulkers.BetterShulkersPlugin"
+description: "${description}"
+api-version: "1.21.1"
