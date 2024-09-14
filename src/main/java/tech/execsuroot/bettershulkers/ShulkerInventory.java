@@ -10,12 +10,16 @@ import org.bukkit.craftbukkit.block.CraftShulkerBox;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
@@ -61,6 +65,26 @@ public class ShulkerInventory implements Listener {
         playSound(mainConfig.getCloseSound());
         saveContents();
         unregister();
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onShulkerMove(InventoryClickEvent event) {
+        InventoryView view = event.getWhoClicked().getOpenInventory();
+        if (view.getTopInventory().getHolder() != holder) return;
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem == null) return;
+        if (event.getCurrentItem().getType().name().endsWith("SHULKER_BOX")) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onShulkerDrop(PlayerDropItemEvent event) {
+        if (!event.getPlayer().equals(viewer)) return;
+        ItemStack droppedItem = event.getItemDrop().getItemStack();
+        if (droppedItem.getType().name().endsWith("SHULKER_BOX")) {
+            event.setCancelled(true);
+        }
     }
 
     private void playSound(MainConfig.SoundSection soundSection) {
